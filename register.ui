@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>400</height>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,37 +121,11 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>170</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
-   </property>
-   <property name="text">
-    <string>Project Code:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>180</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>210</y>
+     <y>170</y>
      <width>121</width>
      <height>41</height>
     </rect>
@@ -163,21 +137,11 @@
     <string>Department Name:  </string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_6">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>220</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>210</y>
      <width>71</width>
      <height>41</height>
     </rect>
@@ -193,7 +157,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>260</y>
+     <y>220</y>
      <width>511</width>
      <height>31</height>
     </rect>
@@ -203,7 +167,7 @@
    <property name="geometry">
     <rect>
      <x>370</x>
-     <y>350</y>
+     <y>320</y>
      <width>301</width>
      <height>41</height>
     </rect>
@@ -220,7 +184,7 @@ background: lightgrey;</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>290</y>
+     <y>250</y>
      <width>71</width>
      <height>41</height>
     </rect>
@@ -232,11 +196,21 @@ background: lightgrey;</string>
     <string>Role:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_8">
+  <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>300</y>
+     <y>180</y>
+     <width>511</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>260</y>
      <width>511</width>
      <height>31</height>
     </rect>
