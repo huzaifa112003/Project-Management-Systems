@@ -69,6 +69,8 @@ class RegisterForm(QMainWindow):
         )
         self.cursor = self.connection.cursor()
 
+        self.lineEdit_3.setEchoMode(QLineEdit.EchoMode.Password)
+        self.lineEdit_4.setEchoMode(QLineEdit.EchoMode.Password)
         self.pushButton.clicked.connect(self.register)
         self.load_roles()
         self.load_departments()
@@ -164,3 +166,4 @@ if __name__ == "__main__":
     mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec())
+
