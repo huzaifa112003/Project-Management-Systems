@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Load the UI file
-        loadUi('main.ui', self)
+        loadUi('mainlogin.ui', self)
 
         # Connect to the SQL Server database
         try:
