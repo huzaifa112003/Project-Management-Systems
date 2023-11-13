@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>770</width>
+    <height>405</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>-6</x>
-      <y>-10</y>
+      <x>-10</x>
+      <y>0</y>
       <width>411</width>
       <height>591</height>
      </rect>
@@ -39,19 +39,19 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>250</y>
-      <width>181</width>
-      <height>20</height>
+      <x>430</x>
+      <y>140</y>
+      <width>221</width>
+      <height>21</height>
      </rect>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>300</y>
-      <width>181</width>
+      <x>430</x>
+      <y>190</y>
+      <width>221</width>
       <height>20</height>
      </rect>
     </property>
@@ -59,9 +59,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>230</y>
-      <width>71</width>
+      <x>430</x>
+      <y>120</y>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -69,14 +69,14 @@
      <string notr="true">font: 12pt  &quot;Yu Gothic UI Semibold&quot;;</string>
     </property>
     <property name="text">
-     <string>Username</string>
+     <string>Email</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>280</y>
+      <x>430</x>
+      <y>170</y>
       <width>71</width>
       <height>20</height>
      </rect>
@@ -91,10 +91,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>350</y>
-      <width>56</width>
-      <height>17</height>
+      <x>630</x>
+      <y>220</y>
+      <width>81</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -108,15 +108,15 @@ background: lightgrey;</string>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>470</y>
-      <width>141</width>
-      <height>17</height>
+      <x>490</x>
+      <y>330</y>
+      <width>181</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 12pt  &quot;Yu Gothic UI Semibold&quot;;
-background: lightgrey;</string>
+     <string notr="true">font: 14pt  &quot;Yu Gothic UI Semibold&quot;;
+background: lightblue;</string>
     </property>
     <property name="text">
      <string>Register</string>
@@ -125,8 +125,8 @@ background: lightgrey;</string>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>30</y>
+      <x>430</x>
+      <y>10</y>
       <width>311</width>
       <height>61</height>
      </rect>
@@ -138,13 +138,32 @@ background: lightgrey;</string>
      <string>Project Management System</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>-30</y>
+      <width>411</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>pxfuel.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>770</width>
      <height>18</height>
     </rect>
    </property>
