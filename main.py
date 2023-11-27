@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         try:
             self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
                 'DATABASE=Project;'
                 'Trusted_Connection=yes;'
             )
@@ -58,12 +58,12 @@ class MainWindow(QMainWindow):
 class RegisterForm(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('register.ui', self)
+        loadUi('registermember.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
                 'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
