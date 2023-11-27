@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>400</height>
+    <width>866</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>-10</x>
-      <y>40</y>
+      <y>0</y>
       <width>411</width>
       <height>591</height>
      </rect>
@@ -91,7 +91,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>570</x>
       <y>220</y>
       <width>81</width>
       <height>21</height>
@@ -108,7 +108,7 @@ background: lightgrey;</string>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>470</x>
       <y>330</y>
       <width>181</width>
       <height>31</height>
@@ -127,7 +127,7 @@ background: lightblue;</string>
      <rect>
       <x>430</x>
       <y>10</y>
-      <width>311</width>
+      <width>411</width>
       <height>61</height>
      </rect>
     </property>
@@ -141,17 +141,17 @@ background: lightblue;</string>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>-6</x>
-      <y>-21</y>
+      <x>-10</x>
+      <y>-30</y>
       <width>411</width>
-      <height>431</height>
+      <height>641</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>pxfuel.jpg</pixmap>
+     <pixmap>../../Users/Administrator/Downloads/pxfuel.jpg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -163,8 +163,8 @@ background: lightblue;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>750</width>
-     <height>18</height>
+     <width>866</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -173,3 +173,4 @@ background: lightblue;</string>
  <resources/>
  <connections/>
 </ui>
+
