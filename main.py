@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         try:
             self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'    
                 'DATABASE=Project;'
                 'Trusted_Connection=yes;'
             )
@@ -58,12 +58,12 @@ class MainWindow(QMainWindow):
 class RegisterForm(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('registermember.ui', self)
+        loadUi('register.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
                 'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
@@ -72,20 +72,7 @@ class RegisterForm(QMainWindow):
         self.lineEdit_3.setEchoMode(QLineEdit.EchoMode.Password)
         self.lineEdit_4.setEchoMode(QLineEdit.EchoMode.Password)
         self.pushButton.clicked.connect(self.register)
-        self.load_roles()
         self.load_departments()
-
-    def load_roles(self):
-        try:
-            # Retrieve roles from the database
-            role_query = "SELECT RoleName FROM Role"
-            roles = self.cursor.execute(role_query).fetchall()
-
-            # Load roles into the combobox
-            self.comboBox_2.addItems([role[0] for role in roles])
-        except pyodbc.Error as e:
-            print(f"Database error: {e}")
-            QMessageBox.warning(self, 'Database Error', 'An error occurred while loading roles.')
 
     def load_departments(self):
         try:
@@ -107,8 +94,7 @@ class RegisterForm(QMainWindow):
         confirm_password = self.lineEdit_4.text()
         job_title = self.lineEdit_7.text()
 
-        # Get selected role and department from the comboboxes
-        role_name = self.comboBox_2.currentText()
+        # Get selected department from the combobox
         department_name = self.comboBox.currentText()
 
         # Check if the password and confirm password match
@@ -125,16 +111,6 @@ class RegisterForm(QMainWindow):
                 QMessageBox.warning(self, 'Email Already Exists', 'Email address is already registered.')
                 return
 
-            # Retrieve RoleID for the given RoleName
-            role_query = "SELECT RoleID FROM Role WHERE RoleName = ?"
-            role_result = self.cursor.execute(role_query, (role_name,)).fetchone()
-
-            if not role_result:
-                QMessageBox.warning(self, 'Role not found', f'Role "{role_name}" not found.')
-                return
-
-            role_id = role_result[0]
-
             # Retrieve DepartmentID for the given DepartmentName
             department_query = "SELECT DepartmentID FROM Department WHERE DepartmentName = ?"
             department_result = self.cursor.execute(department_query, (department_name,)).fetchone()
@@ -142,15 +118,17 @@ class RegisterForm(QMainWindow):
             if not department_result:
                 QMessageBox.warning(self, 'Department not found', f'Department "{department_name}" not found.')
                 return
+            
 
             department_id = department_result[0]
+            
 
             # Insert a new user into the Users table
             insert_query = """
-                INSERT INTO Users (Name, Email, Password, RoleID, JobTitle, DepartmentID)
+                INSERT INTO Users (Name, Email, Password, JobTitle, DepartmentID)
                 VALUES (?, ?, ?, ?, ?, ?)
             """
-            self.cursor.execute(insert_query, (name, email, password, role_id, job_title, department_id))
+            self.cursor.execute(insert_query, (name, email, password, job_title, department_id))
             self.connection.commit()
 
             QMessageBox.information(self, 'Registration Successful', 'User registered successfully.')
