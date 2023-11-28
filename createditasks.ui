@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>717</width>
     <height>391</height>
    </rect>
   </property>
@@ -25,11 +25,14 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background: white;</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>10</y>
      <width>61</width>
      <height>41</height>
@@ -40,13 +43,13 @@
 </string>
    </property>
    <property name="text">
-    <string>Name:</string>
+    <string>Task Name</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>50</y>
      <width>61</width>
      <height>41</height>
@@ -56,23 +59,13 @@
     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
    </property>
    <property name="text">
-    <string>Email:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>60</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
+    <string>Start Date</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>90</y>
      <width>71</width>
      <height>41</height>
@@ -82,50 +75,14 @@
     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
    </property>
    <property name="text">
-    <string>Password:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>100</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
-   </property>
-   <property name="text">
-    <string>Confirm Password:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>140</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
+    <string>End Date</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>170</y>
+     <x>30</x>
+     <y>140</y>
      <width>121</width>
      <height>41</height>
     </rect>
@@ -134,42 +91,16 @@
     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
    </property>
    <property name="text">
-    <string>Department Name:  </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>210</y>
-     <width>71</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
-   </property>
-   <property name="text">
-    <string>Job Title:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_7">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>220</y>
-     <width>511</width>
-     <height>31</height>
-    </rect>
+    <string>Description</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>320</y>
-     <width>301</width>
-     <height>41</height>
+     <x>510</x>
+     <y>330</y>
+     <width>161</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -177,23 +108,66 @@
 background: lightgrey;</string>
    </property>
    <property name="text">
-    <string>Register</string>
+    <string>Create</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QLineEdit" name="lineEdit_5">
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>180</y>
+     <y>150</y>
      <width>511</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: white;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dateEdit">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>100</y>
+     <width>171</width>
      <height>31</height>
     </rect>
    </property>
-   <item>
-    <property name="text">
-     <string>Engineering</string>
-    </property>
-   </item>
+   <property name="styleSheet">
+    <string notr="true">background: white;</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dateEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>60</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: white;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>310</y>
+     <width>211</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: white;</string>
+   </property>
+   <property name="text">
+    <string>How to assign tasks to members figure this out </string>
+   </property>
   </widget>
  </widget>
  <resources/>
