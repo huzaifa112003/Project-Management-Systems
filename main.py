@@ -44,12 +44,24 @@ class MainWindow(QMainWindow):
 
         # Check if the credentials are correct
         if result and result[0] > 0:
-            # QMessageBox.information(self, 'Login Successful', 'Login Successful')
-            self.register = Project()
-            self.register.show()
+            QMessageBox.information(self, 'Login Successful', 'Login Successful')
+
+            # Retrieve the UserID for the logged-in user
+            user_query = "SELECT UserID FROM Users WHERE Email = ?"
+            user_id_result = self.cursor.execute(user_query, (email,)).fetchone()
+
+            if user_id_result:
+                user_id = user_id_result[0]
+                # Open the project screen and pass the user_id
+                self.project_screen = ProjectScreen(user_id)
+                self.project_screen.show()
+
+                # Close the main window
+                self.close()
+            else:
+                QMessageBox.warning(self, 'User ID not found', 'Failed to retrieve User ID.')
         else:
             QMessageBox.warning(self, 'Incorrect Email or Password', 'Incorrect Email or Password')
-
 
     def register(self):
         # Open the registration form
@@ -162,12 +174,58 @@ class RegisterForm(QMainWindow):
             QMessageBox.warning(self, 'Database Error', 'An error occurred while registering the user.')
 
 
+# class Project(QMainWindow):
+#     def __init__(self):
+#         super().__init__()
+#         loadUi('project.ui', self)
+#         #self.resize(1024, 768)
 
-class Project(QMainWindow):
-    def __init__(self):
+#         # Establish the database connection
+#         self.connection = pyodbc.connect(
+#                 'DRIVER={ODBC Driver 17 for SQL Server};'
+#                 'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+#                 'DATABASE=proj;'
+#                 'Trusted_Connection=yes;'
+#         )
+#         self.cursor = self.connection.cursor()
+
+#         self.pushButton.clicked.connect(self.create_project)
+#         # self.pushButton_3.clicked.connect(self.edit_task)
+#         self.load_data_into_table()
+
+        
+#     def load_data_into_table(self):
+#         # Clear the table first
+#         self.tableWidget.setRowCount(0)
+
+#         # Define your query to fetch data
+#         query = "SELECT ProjectName, Description, StartDate, EndDate FROM Project"
+#         try:
+#             self.cursor.execute(query)
+#             for row_number, row_data in enumerate(self.cursor):
+#                 # print(f"Row {row_number}: {row_data}")  # Debugging line
+#                 self.tableWidget.insertRow(row_number)
+#                 for column_number, data in enumerate(row_data):
+#                     # print(f"Column {column_number}: {data}")  # Debugging line
+#                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+#         except pyodbc.Error as e:
+#             print(f"Error loading data into table: {e}")
+#             QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+
+#         self.tableWidget.update()  # Refresh the UI
+
+#     def create_project(self):
+#         self.create_project = CreateProject()
+#         self.create_project.show()
+    
+#     # def edit_task(self):
+#     #     self.edit_task = CreateTask()
+#     #     self.edit_task.show()
+
+class ProjectScreen(QMainWindow):
+    def __init__(self, user_id):
         super().__init__()
         loadUi('project.ui', self)
-        #self.resize(1024, 768)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
@@ -177,31 +235,119 @@ class Project(QMainWindow):
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
+        self.pushButton.clicked.connect(self.create_project)
+        # Save the user ID for later use
+        self.user_id = user_id
 
-        # self.pushButton.clicked.connect(self.create_task)
-        # self.pushButton_3.clicked.connect(self.edit_task)
-        self.load_data_into_table()
+        # Populate the table with projects for the logged-in user
+        self.populate_project_table()
 
-        
-    def load_data_into_table(self):
-        # Clear the table first
-        self.tableWidget.setRowCount(0)
-
-        # Define your query to fetch data
-        query = "SELECT ProjectName, Description, StartDate, EndDate FROM Project"
+    def populate_project_table(self):
         try:
-            self.cursor.execute(query)
-            for row_number, row_data in enumerate(self.cursor):
-                print(f"Row {row_number}: {row_data}")  # Debugging line
-                self.tableWidget.insertRow(row_number)
-                for column_number, data in enumerate(row_data):
-                    print(f"Column {column_number}: {data}")  # Debugging line
-                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+            # Query to retrieve projects for the logged-in user as manager
+            manager_query = """
+                SELECT ProjectName, Description, StartDate, EndDate
+                FROM Project
+                WHERE ManagerID = ?
+            """
+
+            # Query to retrieve projects for the logged-in user as worker/member
+            worker_query = """
+                SELECT ProjectName, Description, StartDate, EndDate
+                FROM Project
+                WHERE ProjectID IN (
+                    SELECT ProjectID
+                    FROM Task
+                    WHERE AssigneeID = ?
+                )
+            """
+
+            # Retrieve the logged-in user's ID
+            user_id = self.user_id
+
+            # Check if the logged-in user is a manager
+            manager_result = self.cursor.execute(manager_query, (user_id,)).fetchall()
+
+            # If not a manager, retrieve projects as a worker/member
+            if not manager_result:
+                projects = self.cursor.execute(worker_query, (user_id,)).fetchall()
+            else:
+                projects = manager_result
+
+            # Set the number of rows in the table
+            self.tableWidget.setRowCount(len(projects))
+
+            # Populate the table with project details
+            for row, project in enumerate(projects):
+                for col, value in enumerate(project):
+                    item = QTableWidgetItem(str(value))
+                    self.tableWidget.setItem(row, col, item)
+
+            # Set the column headers
+            headers = ["Project Name", "Description", "Start Date", "End Date"]
+            self.tableWidget.setHorizontalHeaderLabels(headers)
+
         except pyodbc.Error as e:
-            print(f"Error loading data into table: {e}")
-            QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+            print(f"Database error: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while retrieving project details.')
 
         self.tableWidget.update()  # Refresh the UI
+
+    def create_project(self):
+        self.create_project = CreateProject()
+        self.create_project.show()
+    
+
+
+class CreateProject(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        loadUi('createditproject.ui', self)
+
+        # Establish the database connection
+        self.connection = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
+        )
+        self.cursor = self.connection.cursor()
+        self.pushButton.clicked.connect(self.create_project)
+
+    def create_project(self):
+        # Get the entered project information from the UI
+        project_name = self.lineEdit.text()
+        description = self.lineEdit_5.text()
+        start_date = self.dateEdit_2.date().toString("yyyy-MM-dd")
+        end_date = self.dateEdit_3.date().toString("yyyy-MM-dd")
+        client_name = self.comboBox.currentText()  # Assuming this is the client's name
+
+        # First, retrieve the ClientID from the Client table
+        client_id_query = "SELECT ClientID FROM Client WHERE ClientName = ?"
+        try:
+            self.cursor.execute(client_id_query, (client_name))
+            client_id_result = self.cursor.fetchone()
+            print(client_id_result)
+            if client_id_result:
+                client_id = client_id_result[0]
+
+                # Insert the project information into the database
+                print("Error")
+                project_query = """
+                    INSERT INTO Project (ProjectName, Description, StartDate, EndDate, ClientID) 
+                    VALUES (?, ?, ?, ?, ?)
+                """
+                self.cursor.execute(project_query, (project_name, description, start_date, end_date, client_id))
+                self.connection.commit()
+                QMessageBox.information(self, 'Success', 'Project saved successfully.')
+            else:
+                QMessageBox.warning(self, 'Error', 'Client not found.')
+        except pyodbc.Error as e:
+            print(f"Error in database operation: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred during the database operation.')
+
+        self.close()
+
 
 
 class Task(QMainWindow):
@@ -232,10 +378,10 @@ class Task(QMainWindow):
         try:
             self.cursor.execute(query)
             for row_number, row_data in enumerate(self.cursor):
-                print(f"Row {row_number}: {row_data}")  # Debugging line
+                # print(f"Row {row_number}: {row_data}")  # Debugging line
                 self.tableWidget.insertRow(row_number)
                 for column_number, data in enumerate(row_data):
-                    print(f"Column {column_number}: {data}")  # Debugging line
+                    # print(f"Column {column_number}: {data}")  # Debugging line
                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
         except pyodbc.Error as e:
             print(f"Error loading data into table: {e}")
