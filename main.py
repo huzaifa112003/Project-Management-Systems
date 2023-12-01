@@ -44,7 +44,9 @@ class MainWindow(QMainWindow):
 
         # Check if the credentials are correct
         if result and result[0] > 0:
-            QMessageBox.information(self, 'Login Successful', 'Login Successful')
+            # QMessageBox.information(self, 'Login Successful', 'Login Successful')
+            self.register = Project()
+            self.register.show()
         else:
             QMessageBox.warning(self, 'Incorrect Email or Password', 'Incorrect Email or Password')
 
@@ -159,7 +161,49 @@ class RegisterForm(QMainWindow):
             print(f"Database error: {e}")
             QMessageBox.warning(self, 'Database Error', 'An error occurred while registering the user.')
 
-            
+
+
+class Project(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        loadUi('project.ui', self)
+        #self.resize(1024, 768)
+
+        # Establish the database connection
+        self.connection = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
+        )
+        self.cursor = self.connection.cursor()
+
+        # self.pushButton.clicked.connect(self.create_task)
+        # self.pushButton_3.clicked.connect(self.edit_task)
+        self.load_data_into_table()
+
+        
+    def load_data_into_table(self):
+        # Clear the table first
+        self.tableWidget.setRowCount(0)
+
+        # Define your query to fetch data
+        query = "SELECT ProjectName, Description, StartDate, EndDate FROM Project"
+        try:
+            self.cursor.execute(query)
+            for row_number, row_data in enumerate(self.cursor):
+                print(f"Row {row_number}: {row_data}")  # Debugging line
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    print(f"Column {column_number}: {data}")  # Debugging line
+                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+        except pyodbc.Error as e:
+            print(f"Error loading data into table: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+
+        self.tableWidget.update()  # Refresh the UI
+
+
 class Task(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -177,21 +221,27 @@ class Task(QMainWindow):
 
         self.pushButton.clicked.connect(self.create_task)
         self.pushButton_3.clicked.connect(self.edit_task)
+        self.load_data_into_table()
 
     def load_data_into_table(self):
-    # Clear the table first
+        # Clear the table first
         self.tableWidget.setRowCount(0)
+
         # Define your query to fetch data
         query = "SELECT TaskName, Description, StartDate, EndDate, StatusName as Status FROM Task T join TaskStatus TS on T.StatusID = TS.StatusID"
         try:
             self.cursor.execute(query)
             for row_number, row_data in enumerate(self.cursor):
+                print(f"Row {row_number}: {row_data}")  # Debugging line
                 self.tableWidget.insertRow(row_number)
                 for column_number, data in enumerate(row_data):
+                    print(f"Column {column_number}: {data}")  # Debugging line
                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
         except pyodbc.Error as e:
             print(f"Error loading data into table: {e}")
             QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+
+        self.tableWidget.update()  # Refresh the UI
 
     def create_task(self):
         self.create_task = CreateTask()
@@ -218,9 +268,28 @@ class CreateTask(QMainWindow):
         )
         self.cursor = self.connection.cursor()
 
+    def save_task(self):
+        # Get the entered task information from the UI
+        task_name = self.taskNameLineEdit.text()
+        description = self.descriptionTextEdit.toPlainText()
+        start_date = self.startDateEdit.date().toString("yyyy-MM-dd")
+        end_date = self.endDateEdit.date().toString("yyyy-MM-dd")
+        status = self.statusComboBox.currentText()
+
+        # Insert the task information into the database
+        query = "INSERT INTO Task (TaskName, Description, StartDate, EndDate, StatusID) VALUES (?, ?, ?, ?, ?)"
+        try:
+            self.cursor.execute(query, task_name, description, start_date, end_date, status)
+            self.connection.commit()
+            QMessageBox.information(self, 'Success', 'Task saved successfully.')
+        except pyodbc.Error as e:
+            print(f"Error saving task: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while saving the task.')
+
+        self.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mainWindow = Task()
+    mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec())
