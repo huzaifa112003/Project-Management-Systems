@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QTableWidgetItem
 from PyQt6.uic import loadUi
 import sys
 import pyodbc
@@ -14,8 +14,8 @@ class MainWindow(QMainWindow):
         try:
             self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'    
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
             )
 
@@ -63,8 +63,8 @@ class RegisterForm(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -105,7 +105,6 @@ class RegisterForm(QMainWindow):
         email = self.lineEdit_2.text()
         password = self.lineEdit_3.text()
         confirm_password = self.lineEdit_4.text()
-        job_title = self.lineEdit_7.text()
 
         # Get selected role and department from the comboboxes
         role_name = self.comboBox_2.currentText()
@@ -149,10 +148,10 @@ class RegisterForm(QMainWindow):
 
             # Insert a new user into the Users table
             insert_query = """
-                INSERT INTO Users (Name, Email, Password, RoleID, JobTitle, DepartmentID)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO Users (Name, Email, Password, RoleID, DepartmentID)
+                VALUES (?, ?, ?, ?, ?)
             """
-            self.cursor.execute(insert_query, (name, email, password, role_id, job_title, department_id))
+            self.cursor.execute(insert_query, (name, email, password, role_id, department_id))
             self.connection.commit()
 
             QMessageBox.information(self, 'Registration Successful', 'User registered successfully.')
@@ -161,11 +160,67 @@ class RegisterForm(QMainWindow):
             QMessageBox.warning(self, 'Database Error', 'An error occurred while registering the user.')
 
             
+class Task(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        loadUi('task.ui', self)
+        #self.resize(1024, 768)
+
+        # Establish the database connection
+        self.connection = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
+        )
+        self.cursor = self.connection.cursor()
+
+        self.pushButton.clicked.connect(self.create_task)
+        self.pushButton_3.clicked.connect(self.edit_task)
+
+    def load_data_into_table(self):
+    # Clear the table first
+        self.tableWidget.setRowCount(0)
+        # Define your query to fetch data
+        query = "SELECT TaskName, Description, StartDate, EndDate, StatusName as Status FROM Task T join TaskStatus TS on T.StatusID = TS.StatusID"
+        try:
+            self.cursor.execute(query)
+            for row_number, row_data in enumerate(self.cursor):
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+        except pyodbc.Error as e:
+            print(f"Error loading data into table: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+
+    def create_task(self):
+        self.create_task = CreateTask()
+        self.create_task.show()
+    
+    def edit_task(self):
+        self.edit_task = CreateTask()
+        self.edit_task.show()
+
+            
+
+
+class CreateTask(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        loadUi('createditasks.ui', self)
+
+        # Establish the database connection
+        self.connection = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
+        )
+        self.cursor = self.connection.cursor()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mainWindow = MainWindow()
+    mainWindow = Task()
     mainWindow.show()
     sys.exit(app.exec())
-
