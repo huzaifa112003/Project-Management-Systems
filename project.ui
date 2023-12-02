@@ -139,6 +139,11 @@
    </property>
    <column>
     <property name="text">
+     <string>Project ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>Project Name</string>
     </property>
    </column>
@@ -155,6 +160,11 @@
    <column>
     <property name="text">
      <string>EndDate</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Client Name</string>
     </property>
    </column>
   </widget>
