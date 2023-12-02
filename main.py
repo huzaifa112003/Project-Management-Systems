@@ -296,6 +296,7 @@ class ProjectScreen(QMainWindow):
             # Enable/disable buttons based on the user's role
             self.pushButton.setEnabled(user_is_manager)
             self.pushButton_3.setEnabled(user_is_manager)
+            self.pushButton_2.setEnabled(user_is_manager)
 
         except pyodbc.Error as e:
             print(f"Database error: {e}")
