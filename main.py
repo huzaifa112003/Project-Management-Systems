@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QTableWidgetItem
+from PyQt6.QtCore import QDate, pyqtSignal
 from PyQt6.uic import loadUi
 import sys
 import pyodbc
@@ -13,13 +14,11 @@ class MainWindow(QMainWindow):
         # Connect to the SQL Server database
         try:
             self.connection = pyodbc.connect(
-                'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
-                'DATABASE=proj;'
-                'Trusted_Connection=yes;'
+                    'DRIVER={ODBC Driver 17 for SQL Server};'
+                    'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                    'DATABASE=Project;'
+                    'Trusted_Connection=yes;'
             )
-
-            # Create a cursor
             self.cursor = self.connection.cursor()
 
             print("Connected to the database.")
@@ -77,8 +76,8 @@ class RegisterForm(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
-                'DATABASE=proj;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -222,39 +221,52 @@ class RegisterForm(QMainWindow):
 #     #     self.edit_task = CreateTask()
 #     #     self.edit_task.show()
 
+
 class ProjectScreen(QMainWindow):
+
     def __init__(self, user_id):
         super().__init__()
         loadUi('project.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
-                'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
-                'DATABASE=proj;'
-                'Trusted_Connection=yes;'
+            'DRIVER={ODBC Driver 17 for SQL Server};'
+            'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+            'DATABASE=Project;'
+            'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
         self.pushButton.clicked.connect(self.create_project)
+        self.pushButton_3.clicked.connect(self.edit_project)
+        self.pushButton_2.clicked.connect(self.delete_project)
         # Save the user ID for later use
         self.user_id = user_id
 
         # Populate the table with projects for the logged-in user
         self.populate_project_table()
 
+    def is_manager(self, user_id):
+        # Check if the user is the manager based on the user ID
+        return user_id == 1
+
     def populate_project_table(self):
         try:
+            # Determine if the logged-in user is a manager
+            user_is_manager = self.is_manager(self.user_id)
+
             # Query to retrieve projects for the logged-in user as manager
             manager_query = """
-                SELECT ProjectName, Description, StartDate, EndDate
+                SELECT ProjectID, ProjectName, Description, StartDate, EndDate, ClientName
                 FROM Project
+                INNER JOIN Client ON Project.ClientID = Client.ClientID
                 WHERE ManagerID = ?
             """
 
             # Query to retrieve projects for the logged-in user as worker/member
             worker_query = """
-                SELECT ProjectName, Description, StartDate, EndDate
+                SELECT ProjectID, ProjectName, Description, StartDate, EndDate, ClientName
                 FROM Project
+                INNER JOIN Client ON Project.ClientID = Client.ClientID
                 WHERE ProjectID IN (
                     SELECT ProjectID
                     FROM Task
@@ -262,17 +274,11 @@ class ProjectScreen(QMainWindow):
                 )
             """
 
-            # Retrieve the logged-in user's ID
-            user_id = self.user_id
-
-            # Check if the logged-in user is a manager
-            manager_result = self.cursor.execute(manager_query, (user_id,)).fetchall()
-
-            # If not a manager, retrieve projects as a worker/member
-            if not manager_result:
-                projects = self.cursor.execute(worker_query, (user_id,)).fetchall()
+            # Retrieve projects based on the user's role
+            if user_is_manager:
+                projects = self.cursor.execute(manager_query, (self.user_id,)).fetchall()
             else:
-                projects = manager_result
+                projects = self.cursor.execute(worker_query, (self.user_id,)).fetchall()
 
             # Set the number of rows in the table
             self.tableWidget.setRowCount(len(projects))
@@ -284,8 +290,12 @@ class ProjectScreen(QMainWindow):
                     self.tableWidget.setItem(row, col, item)
 
             # Set the column headers
-            headers = ["Project Name", "Description", "Start Date", "End Date"]
+            headers = ["Project ID", "Project Name", "Description", "Start Date", "End Date", "Client Name"]
             self.tableWidget.setHorizontalHeaderLabels(headers)
+
+            # Enable/disable buttons based on the user's role
+            self.pushButton.setEnabled(user_is_manager)
+            self.pushButton_3.setEnabled(user_is_manager)
 
         except pyodbc.Error as e:
             print(f"Database error: {e}")
@@ -296,19 +306,162 @@ class ProjectScreen(QMainWindow):
     def create_project(self):
         self.create_project = CreateProject()
         self.create_project.show()
+
+    def edit_project(self):
+        # Get the selected project details
+        selected_row = self.tableWidget.currentRow()
+        if selected_row < 0:
+            QMessageBox.warning(self, 'No Project Selected', 'Please select a project to edit.')
+            return
+
+        # Retrieve the ProjectID
+        project_id = int(self.tableWidget.item(selected_row, 0).text())
+
+        # Retrieve other project details
+        project_details = [self.tableWidget.item(selected_row, col).text() for col in
+                        range(1, self.tableWidget.columnCount())]
+
+        # Pass the project details and ProjectID to the EditProject screen
+        self.edit_project = EditProject(project_id, project_details)
+        self.edit_project.editing_complete.connect(self.populate_project_table)
+        self.edit_project.show()
+
+    def delete_project(self):
+        # Get the selected project details
+        selected_row = self.tableWidget.currentRow()
+        if selected_row < 0:
+            QMessageBox.warning(self, 'No Project Selected', 'Please select a project to delete.')
+            return
+
+        # Confirm deletion
+        confirm_msg = QMessageBox.question(self, 'Confirmation', 'Are you sure you want to delete this project?\nThis will delete all related tasks and reports.',
+                                           QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+
+        if confirm_msg == QMessageBox.StandardButton.Yes:
+            # Retrieve the ProjectID
+            project_id = int(self.tableWidget.item(selected_row, 0).text())
+
+            # Delete related tasks and reports
+            self.delete_related_tasks_and_reports(project_id)
+
+            # Delete the project
+            self.delete_project_record(project_id)
+
+            # Refresh the project table
+            self.populate_project_table()
+
+    def delete_related_tasks_and_reports(self, project_id):
+        try:
+            # Delete related tasks
+            task_delete_query = "DELETE FROM Task WHERE ProjectID = ?"
+            self.cursor.execute(task_delete_query, (project_id,))
+            self.connection.commit()
+
+            # Delete related reports
+            report_delete_query = "DELETE FROM Report WHERE ProjectID = ?"
+            self.cursor.execute(report_delete_query, (project_id,))
+            self.connection.commit()
+
+        except pyodbc.Error as e:
+            print(f"Error deleting related tasks and reports: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while deleting related tasks and reports.')
+
+    def delete_project_record(self, project_id):
+        try:
+            # Delete the project
+            project_delete_query = "DELETE FROM Project WHERE ProjectID = ?"
+            self.cursor.execute(project_delete_query, (project_id,))
+            self.connection.commit()
+
+            QMessageBox.information(self, 'Success', 'Project deleted successfully.')
+
+        except pyodbc.Error as e:
+            print(f"Error deleting project: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while deleting the project.')
+
+
+class EditProject(QMainWindow):
+
+    editing_complete = pyqtSignal()
+
+    def __init__(self, project_id, project_details):
+        super().__init__()
+        loadUi('editproject.ui', self)
+
+        # Establish the database connection
+        self.connection = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'DATABASE=Project;'
+                'Trusted_Connection=yes;'
+        )
+        self.cursor = self.connection.cursor()
+
+        self.project_id = project_id
+        self.project_details = project_details
+
+        # Populate the fields with the existing project details
+        self.lineEdit.setText(project_details[0])  # Project Name
+        self.lineEdit_5.setText(project_details[1])  # Description
+        # Set the start and end dates using QDate
+        start_date = QDate.fromString(project_details[2], 'yyyy-MM-dd')
+        self.dateEdit_2.setDate(start_date)
+        end_date = QDate.fromString(project_details[3], 'yyyy-MM-dd')
+        self.dateEdit_3.setDate(end_date)
+        self.comboBox.setCurrentText(project_details[4])  # Assuming this is the client's name
+
+        # Connect the update button to the update_project function
+        self.pushButton.clicked.connect(self.update_project)
+
+    def update_project(self):
+        # Get the entered project information from the UI
+        project_name = self.lineEdit.text()
+        description = self.lineEdit_5.text()
+        start_date = self.dateEdit_2.date().toString("yyyy-MM-dd")
+        end_date = self.dateEdit_3.date().toString("yyyy-MM-dd")
+        client_name = self.comboBox.currentText()  # Assuming this is the client's name
+
+        # Retrieve the ClientID from the Client table
+        client_id_query = "SELECT ClientID FROM Client WHERE ClientName = ?"
+        try:
+            self.cursor.execute(client_id_query, (client_name,))
+            client_id_result = self.cursor.fetchone()
+
+            if client_id_result:
+                client_id = client_id_result[0]
+
+                # Update the project information in the database using the original ProjectID
+                project_query = """
+                    UPDATE Project
+                    SET ProjectName = ?, Description = ?, StartDate = ?, EndDate = ?, ClientID = ?
+                    WHERE ProjectID = ?
+                """
+                self.cursor.execute(project_query, (project_name, description, start_date, end_date, client_id, self.project_id))
+                self.connection.commit()
+                QMessageBox.information(self, 'Success', 'Project updated successfully.')
+
+                # Notify that the editing is complete
+                self.editing_complete.emit()
+            else:
+                QMessageBox.warning(self, 'Error', 'Client not found.')
+        except pyodbc.Error as e:
+            print(f"Error in database operation: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred during the database operation.')
+
+        self.close()
     
 
 
 class CreateProject(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('createditproject.ui', self)
+        loadUi('createproject.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
-                'DATABASE=proj;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -359,8 +512,8 @@ class Task(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
-                'DATABASE=proj;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -408,8 +561,8 @@ class CreateTask(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=DESKTOP-NBH907Q\KNIGHT;'
-                'DATABASE=proj;'
+                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
+                'DATABASE=Project;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -439,3 +592,5 @@ if __name__ == "__main__":
     mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec())
+
+
