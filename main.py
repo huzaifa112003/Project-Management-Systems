@@ -622,7 +622,8 @@ class AddTasks(QMainWindow):
         self.project_id = project_id
         self.project_name = project_name
         self.pushButton_2.clicked.connect(self.create_task)
-        self.pushButton_3.clicked.connect(self.push_tasks)
+        self.pushButton_3.clicked.connect(self.save_all_tasks)
+
         #print(self.project_id, self.project_name)
         # self.pushButton.clicked.connect(self.save_task)
         # self.populate_department_combo_box()           
@@ -648,9 +649,45 @@ class AddTasks(QMainWindow):
 
         self.tableWidget.update()  # Refresh the UI
     
-    def push_tasks(self):
-        #needs to be implemented
-        pass
+    def save_all_tasks(self):
+        try:
+            # Start a transaction
+            self.connection.autocommit = False
+
+            # Prepare the insert statement
+            query = """
+            INSERT INTO Task (TaskName, Description, StartDate, EndDate, ProjectID, AssigneeID)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """
+
+            # Iterate over the rows of the table widget
+            for row in range(self.tableWidget.rowCount()):
+                # Extract the task data
+                task_name = self.tableWidget.item(row, 0).text()
+                description = self.tableWidget.item(row, 1).text()
+                start_date = self.tableWidget.item(row, 2).text()
+                end_date = self.tableWidget.item(row, 3).text()
+                # Assuming project_id is constant for all tasks
+                project_id = int(self.project_id)
+                # Extract assignee_id, converting to int if necessary
+                assignee_id = int(self.tableWidget.item(row, 5).text())
+
+                # Execute the insert statement
+                self.cursor.execute(query, task_name, description, start_date, end_date, project_id, assignee_id)
+
+            # If all inserts are successful, commit the transaction
+            self.connection.commit()
+            QMessageBox.information(self, 'Success', 'All tasks saved successfully.')
+
+        except pyodbc.Error as e:
+            print(f"Database error: {e}")
+            self.connection.rollback()  # Rollback the transaction on error
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while saving the tasks. Changes have been rolled back.')
+        
+        finally:
+            # Restore autocommit mode
+            self.connection.autocommit = True
+
 
 class CreateTask(QMainWindow):
     
