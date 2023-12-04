@@ -132,6 +132,11 @@
      <string>Status</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Assigned To</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

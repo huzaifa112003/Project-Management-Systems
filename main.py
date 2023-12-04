@@ -14,10 +14,10 @@ class MainWindow(QMainWindow):
         # Connect to the SQL Server database
         try:
             self.connection = pyodbc.connect(
-                    'DRIVER={ODBC Driver 17 for SQL Server};'
-                    'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                    'DATABASE=Project;'
-                    'Trusted_Connection=yes;'
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
             )
             self.cursor = self.connection.cursor()
 
@@ -76,8 +76,8 @@ class RegisterForm(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -230,15 +230,16 @@ class ProjectScreen(QMainWindow):
 
         # Establish the database connection
         self.connection = pyodbc.connect(
-            'DRIVER={ODBC Driver 17 for SQL Server};'
-            'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-            'DATABASE=Project;'
-            'Trusted_Connection=yes;'
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
+                'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
         self.pushButton.clicked.connect(self.create_project)
-        self.pushButton_3.clicked.connect(self.edit_project)
         self.pushButton_2.clicked.connect(self.delete_project)
+        self.pushButton_3.clicked.connect(self.edit_project)
+        self.pushButton_4.clicked.connect(self.open_project)
         # Save the user ID for later use
         self.user_id = user_id
 
@@ -292,11 +293,12 @@ class ProjectScreen(QMainWindow):
             # Set the column headers
             headers = ["Project ID", "Project Name", "Description", "Start Date", "End Date", "Client Name"]
             self.tableWidget.setHorizontalHeaderLabels(headers)
+            self.tableWidget.hideColumn(0)
 
             # Enable/disable buttons based on the user's role
-            self.pushButton.setEnabled(user_is_manager)
-            self.pushButton_3.setEnabled(user_is_manager)
-            self.pushButton_2.setEnabled(user_is_manager)
+            self.pushButton.setVisible(user_is_manager)
+            self.pushButton_3.setVisible(user_is_manager)
+            self.pushButton_2.setVisible(user_is_manager)
 
         except pyodbc.Error as e:
             print(f"Database error: {e}")
@@ -380,6 +382,33 @@ class ProjectScreen(QMainWindow):
             print(f"Error deleting project: {e}")
             QMessageBox.warning(self, 'Database Error', 'An error occurred while deleting the project.')
 
+    def get_selected_project_data(self):
+        current_row = self.tableWidget.currentRow()  # Get the currently selected row index
+        if current_row != -1:  # Check if a row is actually selected
+            project_id_item = self.tableWidget.item(current_row, 0)  # 0 is assuming ProjectID is in the first column
+            project_name_item = self.tableWidget.item(current_row, 1)  # Project name in the second column
+            if project_id_item and project_name_item:
+                project_id = project_id_item.text()
+                project_name = project_name_item.text()
+                return project_id, project_name
+        return None, None # Return None or handle the case when no row is selected
+        
+    # def open_project(self):
+    #     self.open_project = Task()
+    #     self.open_project.show()
+    def open_project(self):
+        # project_id = self.get_selected_project_id()
+        project_id, project_name = self.get_selected_project_data()
+        if project_id and project_name:
+            self.open_projectasks_window = Task(project_id, project_name)
+            self.open_projectasks_window.show()
+            # self.open_project_window.load_tasks()  # Call the method to load the tasks for this project ID
+            # self.open_project_window.show()  # Show the Task window
+        else:
+            # Handle the case when no project is selected (e.g., show an error message)
+            print("Please select a project first.")
+
+
 
 class EditProject(QMainWindow):
 
@@ -387,13 +416,13 @@ class EditProject(QMainWindow):
 
     def __init__(self, project_id, project_details):
         super().__init__()
-        loadUi('editproject.ui', self)
+        loadUi('createditproject.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -456,13 +485,13 @@ class EditProject(QMainWindow):
 class CreateProject(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('createproject.ui', self)
+        loadUi('createditproject.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
@@ -505,43 +534,87 @@ class CreateProject(QMainWindow):
 
 
 class Task(QMainWindow):
-    def __init__(self):
+    def __init__(self, project_id, project_name):
         super().__init__()
         loadUi('task.ui', self)
+        self.project_id = project_id
         #self.resize(1024, 768)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
 
         self.pushButton.clicked.connect(self.create_task)
         self.pushButton_3.clicked.connect(self.edit_task)
-        self.load_data_into_table()
+        
+        self.populate_tasks_for_project(self.project_id)
+        self.label_2.setText(project_name)
 
-    def load_data_into_table(self):
-        # Clear the table first
-        self.tableWidget.setRowCount(0)
+        # self.load_data_into_table()
+        #print(project_id)
+        
+    def populate_tasks_for_project(self, project_id):
 
-        # Define your query to fetch data
-        query = "SELECT TaskName, Description, StartDate, EndDate, StatusName as Status FROM Task T join TaskStatus TS on T.StatusID = TS.StatusID"
         try:
-            self.cursor.execute(query)
-            for row_number, row_data in enumerate(self.cursor):
-                # print(f"Row {row_number}: {row_data}")  # Debugging line
-                self.tableWidget.insertRow(row_number)
-                for column_number, data in enumerate(row_data):
-                    # print(f"Column {column_number}: {data}")  # Debugging line
-                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
-        except pyodbc.Error as e:
-            print(f"Error loading data into table: {e}")
-            QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+            # Query to retrieve tasks for a specific project
+            query = """
+                SELECT 
+                TaskName, 
+                Description, 
+                StartDate, 
+                EndDate, 
+                (SELECT StatusName FROM TaskStatus TS WHERE TS.StatusID = Task.StatusID) AS StatusName,
+                (SELECT Name FROM Users U WHERE U.UserID = Task.AssigneeID) AS Assigned
+            FROM Task
+            WHERE ProjectID = ?
+            """
+        
+            # Execute the query with the specific project ID
+            tasks = self.cursor.execute(query, (project_id,)).fetchall()
 
-        self.tableWidget.update()  # Refresh the UI
+            # Set the number of rows in the tasks table
+            self.tableWidget.setRowCount(len(tasks))
+
+            # Populate the table with task details
+            for row, task in enumerate(tasks):
+                for col, value in enumerate(task):
+                    item = QTableWidgetItem(str(value))
+                    self.tableWidget.setItem(row, col, item)
+
+            # # Set the column headers for tasks
+            # headers = ["Task ID", "Task Name", "Description", "Start Date", "End Date", "Status ID"]
+            # self.tableWidget.setHorizontalHeaderLabels(headers)
+
+        except pyodbc.Error as e:
+            print(f"Database error: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while retrieving tasks for the project.')
+            self.tableWidget.update()  # Refresh the UI
+
+
+    # def load_data_into_table(self):
+    #     # Clear the table first
+    #     self.tableWidget.setRowCount(0)
+
+    #     # Define your query to fetch data
+    #     query = "SELECT TaskName, Description, StartDate, EndDate, StatusName as Status FROM Task T join TaskStatus TS on T.StatusID = TS.StatusID"
+    #     try:
+    #         self.cursor.execute(query)
+    #         for row_number, row_data in enumerate(self.cursor):
+    #             # print(f"Row {row_number}: {row_data}")  # Debugging line
+    #             self.tableWidget.insertRow(row_number)
+    #             for column_number, data in enumerate(row_data):
+    #                 # print(f"Column {column_number}: {data}")  # Debugging line
+    #                 self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+    #     except pyodbc.Error as e:
+    #         print(f"Error loading data into table: {e}")
+    #         QMessageBox.warning(self, 'Database Error', 'An error occurred while loading data into the table.')
+
+    #     self.tableWidget.update()  # Refresh the UI
 
     def create_task(self):
         self.create_task = CreateTask()
@@ -562,24 +635,43 @@ class CreateTask(QMainWindow):
         # Establish the database connection
         self.connection = pyodbc.connect(
                 'DRIVER={ODBC Driver 17 for SQL Server};'
-                'SERVER=MAAZ-ULLAH\SQLEXPRESS;'
-                'DATABASE=Project;'
+                'SERVER=DESKTOP-NBH907Q\KNIGHT;'    
+                'DATABASE=proj;'
                 'Trusted_Connection=yes;'
         )
         self.cursor = self.connection.cursor()
+        self.pushButton.clicked.connect(self.save_task)
+        self.populate_department_combo_box()
+
+    def populate_department_combo_box(self):
+        query = "SELECT U.UserID, U.Name, R.RoleName FROM Users U JOIN Role R ON U.RoleID = R.RoleID"
+        try:
+            self.cursor.execute(query)
+            users = self.cursor.fetchall()
+            for user in users:
+                user_id = user[0]
+                user_name = user[1]
+                user_role = user[2]
+                combo_text = f"{user_name} - {user_role}"
+                self.comboBox.addItem(combo_text, user_id)  # Adding user_id as userData
+        except pyodbc.Error as e:
+            print(f"Database error: {e}")
+            QMessageBox.warning(self, 'Database Error', 'An error occurred while retrieving data.')
+
 
     def save_task(self):
         # Get the entered task information from the UI
-        task_name = self.taskNameLineEdit.text()
-        description = self.descriptionTextEdit.toPlainText()
-        start_date = self.startDateEdit.date().toString("yyyy-MM-dd")
-        end_date = self.endDateEdit.date().toString("yyyy-MM-dd")
-        status = self.statusComboBox.currentText()
+        task_name = self.lineEdit.text()
+        description = self.lineEdit_5.text()
+        start_date = self.dateEdit_2.date().toString("yyyy-MM-dd")
+        end_date = self.dateEdit.date().toString("yyyy-MM-dd")
+        # assigned_to = self.comboBox.currentText()
 
-        # Insert the task information into the database
-        query = "INSERT INTO Task (TaskName, Description, StartDate, EndDate, StatusID) VALUES (?, ?, ?, ?, ?)"
+        assigned_to_user_id = self.comboBox.currentData()  # Get the userID from the selected combo box item
+
+        query = "INSERT INTO Task (TaskName, Description, StartDate, EndDate, AssigneeID) VALUES (?, ?, ?, ?, ?)"
         try:
-            self.cursor.execute(query, task_name, description, start_date, end_date, status)
+            self.cursor.execute(query, task_name, description, start_date, end_date, assigned_to_user_id)
             self.connection.commit()
             QMessageBox.information(self, 'Success', 'Task saved successfully.')
         except pyodbc.Error as e:
@@ -587,6 +679,7 @@ class CreateTask(QMainWindow):
             QMessageBox.warning(self, 'Database Error', 'An error occurred while saving the task.')
 
         self.close()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
