@@ -416,7 +416,7 @@ class EditProject(QMainWindow):
 
     def __init__(self, project_id, project_details):
         super().__init__()
-        loadUi('createditproject.ui', self)
+        loadUi('editproject.ui', self)
 
         # Establish the database connection
         self.connection = pyodbc.connect(
