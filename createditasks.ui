@@ -14,7 +14,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #fffff2;</string>
+   <string notr="true">background: #fffff2;
+
+</string>
   </property>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
