@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #e0d8c7;</string>
+  </property>
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
@@ -23,7 +26,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white;</string>
+    <string notr="true">background: #F1E0B6;</string>
    </property>
    <item>
     <property name="text">
@@ -51,7 +54,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white;</string>
+    <string notr="true">background: #F1E0B6;</string>
    </property>
    <property name="text">
     <string/>
@@ -67,23 +70,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white;</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>320</y>
-     <width>321</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background: white;</string>
-   </property>
-   <property name="text">
-    <string>how to add members to a certain project figure out </string>
+    <string notr="true">background: #F1E0B6;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -91,12 +78,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>141</width>
+     <width>91</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">font: 12pt  &quot;Times New Roman&quot;;
 </string>
    </property>
    <property name="text">
@@ -113,7 +100,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
+    <string notr="true">font: 12pt  &quot;Times New Roman&quot;;
+</string>
    </property>
    <property name="text">
     <string>Start Date</string>
@@ -129,7 +117,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white;</string>
+    <string notr="true">background: #F1E0B6;</string>
    </property>
   </widget>
   <widget class="QDateEdit" name="dateEdit_3">
@@ -142,7 +130,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white;</string>
+    <string notr="true">background: #F1E0B6;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -155,7 +143,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
+    <string notr="true">font: 12pt  &quot;Times New Roman&quot;;
+</string>
    </property>
    <property name="text">
     <string>End Date</string>
@@ -165,13 +154,14 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>140</y>
      <width>121</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
+    <string notr="true">font: 12pt  &quot;Times New Roman&quot;;
+</string>
    </property>
    <property name="text">
     <string>Client Name</string>
@@ -180,15 +170,29 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>510</x>
+     <x>480</x>
      <y>330</y>
      <width>161</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
-background: lightgrey;</string>
+    <string notr="true">#pushButton{
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px; 
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton:hover {
+    background-color: #F1E0B6; 
+}
+
+#pushButton:pressed {
+    background-color: #1f618d; 
+}
+</string>
    </property>
    <property name="text">
     <string>Edit</string>
@@ -198,16 +202,48 @@ background: lightgrey;</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>170</y>
+     <y>180</y>
      <width>121</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;</string>
+    <string notr="true">font: 12pt  &quot;Times New Roman&quot;;
+</string>
    </property>
    <property name="text">
     <string>Description</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>330</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#pushButton_2{
+    background-color: #D2B48C; /* Blue background color for the button */
+    color: #00000; /* White text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border: 1px solid #736357; /* Border color */
+    border-radius: 5px; /* Slightly rounded corners */
+}
+
+#pushButton_2:hover {
+    background-color: #F1E0B6; /* Darker blue on hover */
+}
+
+#pushButton_2:pressed {
+    background-color: #1f618d; /* Even darker blue when pressed */
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Back</string>
    </property>
   </widget>
  </widget>

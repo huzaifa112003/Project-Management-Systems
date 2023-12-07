@@ -13,17 +13,35 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #e0d8c7;</string>
+  </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>250</y>
-     <width>101</width>
-     <height>23</height>
+     <y>150</y>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">#pushButton {
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px; 
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton:hover {
+    background-color: #F1E0B6;
+}
+
+#pushButton:pressed {
+    background-color: #1f618d; 
+}
+
 </string>
    </property>
    <property name="text">
@@ -34,13 +52,28 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>330</y>
-     <width>101</width>
-     <height>23</height>
+     <y>290</y>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">#pushButton_2{
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px;
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton_2:hover {
+    background-color: #F1E0B6;
+}
+
+#pushButton_2:pressed {
+    background-color: #1f618d; 
+}
+
 </string>
    </property>
    <property name="text">
@@ -52,12 +85,12 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>111</width>
-     <height>51</height>
+     <width>161</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 20pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">font: 20pt  &quot;Times New Roman&quot;;
 </string>
    </property>
    <property name="text">
@@ -80,14 +113,29 @@
   <widget class="QPushButton" name="pushButton_4">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>610</x>
      <y>340</y>
-     <width>101</width>
-     <height>31</height>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">#pushButton_4{
+    background-color: #D2B48C; /* Blue background color for the button */
+    color: #00000; /* White text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border: 1px solid #736357; /* Border color */
+    border-radius: 5px; /* Slightly rounded corners */
+}
+
+#pushButton_4:hover {
+    background-color: #F1E0B6; /* Darker blue on hover */
+}
+
+#pushButton_4:pressed {
+    background-color: #1f618d; /* Even darker blue when pressed */
+}
+
 </string>
    </property>
    <property name="text">
@@ -97,14 +145,29 @@
   <widget class="QPushButton" name="pushButton_5">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>440</x>
      <y>340</y>
-     <width>101</width>
-     <height>31</height>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">#pushButton_5{
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px; 
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton_5:hover {
+    background-color: #F1E0B6; 
+}
+
+#pushButton_5:pressed {
+    background-color: #1f618d; 
+}
+
 </string>
    </property>
    <property name="text">
@@ -115,13 +178,28 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>290</y>
-     <width>101</width>
-     <height>23</height>
+     <y>220</y>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
+    <string notr="true">#pushButton_3{
+    background-color: #D2B48C; /* Blue background color for the button */
+    color: #00000; /* White text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border: 1px solid #736357; /* Border color */
+    border-radius: 5px; /* Slightly rounded corners */
+}
+
+#pushButton_3:hover {
+    background-color: #F1E0B6; /* Darker blue on hover */
+}
+
+#pushButton_3:pressed {
+    background-color: #1f618d; /* Even darker blue when pressed */
+}
+
 </string>
    </property>
    <property name="text">
@@ -131,11 +209,76 @@
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>80</y>
-     <width>371</width>
-     <height>211</height>
+     <x>240</x>
+     <y>20</y>
+     <width>501</width>
+     <height>291</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTableView {
+    background-color: #fffff0; 
+    border: 1px solid #d3d3d3; 
+}
+QHeaderView::section {
+    background-color: #D2B48C; 
+    color: black; 
+    padding: 4px;
+    border: 1px solid #d3d3d3; 
+}
+QTableView::item {
+    border-bottom: 1px solid #d3d3d3;
+}
+QTableView::item:selected {
+    background-color: #A9A9A9;
+}
+QTableView::item:hover {
+    background-color: #F1E0B6; 
+}
+QTableView {
+    font: 12pt &quot;Arial&quot;; 
+}
+
+QTableView::item {
+    text-align: center; 
+}
+QScrollBar:vertical {
+    border: 1px solid #ffffff; 
+    background: #fffff0; 
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #F1E0B6; 
+    min-height: 20px; 
+}
+QScrollBar:horizontal {
+    border: 1px solid #ffffff; 
+    background: #fffff0;
+    height: 10px; 
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #F1E0B6; 
+    min-width: 20px; 
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none; 
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: none; 
+}
+
+
+
+</string>
    </property>
    <column>
     <property name="text">

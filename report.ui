@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #e0d8c7;</string>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>20</y>
+     <width>451</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTableView {
+    background-color: #fffff0; 
+    border: 1px solid #d3d3d3; 
+}
+QHeaderView::section {
+    background-color: #D2B48C; 
+    color: white; 
+    padding: 4px;
+    border: 1px solid #d3d3d3; 
+}
+QTableView::item {
+    border-bottom: 2px solid #d3d3d3;
+}
+QTableView::item:selected {
+    background-color: #A9A9A9;
+}
+QTableView::item:hover {
+    background-color: #F1E0B6; 
+}
+QTableView {
+    font: 12pt &quot;Arial&quot;; 
+}
+
+QTableView::item {
+    text-align: center; 
+}
+QScrollBar:vertical {
+    border: 1px solid #ffffff; 
+    background: #fffff0; 
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #F1E0B6; 
+    min-height: 20px; 
+}
+QScrollBar:horizontal {
+    border: 1px solid #ffffff; 
+    background: #fffff0;
+    height: 10px; 
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #F1E0B6; 
+    min-width: 20px; 
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none; 
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: none; 
+}
+
+
+
+</string>
+   </property>
+   <column>
+    <property name="text">
+     <string>Task Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Description</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>StartDate</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>EndDate</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Assigned To</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>310</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 20pt  &quot;Times New Roman&quot;;
+</string>
+   </property>
+   <property name="text">
+    <string>Progress:</string>
+   </property>
+  </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>320</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>24</number>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>320</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#pushButton {
+    background-color: #D2B48C; 
+    color: #ffffff; 
+    padding: 10px 20px; 
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton:hover {
+    background-color: #F1E0B6; 
+}
+
+#pushButton:pressed {
+    background-color: #1f618d;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Report</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

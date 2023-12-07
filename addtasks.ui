@@ -7,25 +7,42 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>400</height>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #e0d8c7;</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>120</y>
-      <width>81</width>
-      <height>21</height>
+      <x>30</x>
+      <y>50</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
-background: lightgrey;</string>
+     <string notr="true">#pushButton_2{
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px;
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton_2:hover {
+    background-color: #F1E0B6;
+}
+
+#pushButton_2:pressed {
+    background-color: #1f618d; 
+}
+</string>
     </property>
     <property name="text">
      <string>Add</string>
@@ -34,15 +51,29 @@ background: lightgrey;</string>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>310</y>
-      <width>81</width>
-      <height>21</height>
+      <x>590</x>
+      <y>290</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
-background: lightgrey;</string>
+     <string notr="true">#pushButton_3{
+    background-color: #D2B48C; 
+    color: #00000; 
+    padding: 10px 20px;
+    border: 1px solid #736357; 
+    border-radius: 5px; 
+}
+
+#pushButton_3:hover {
+    background-color: #F1E0B6;
+}
+
+#pushButton_3:pressed {
+    background-color: #1f618d; 
+}
+</string>
     </property>
     <property name="text">
      <string>Save</string>
@@ -52,10 +83,75 @@ background: lightgrey;</string>
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>60</y>
+      <y>0</y>
       <width>501</width>
-      <height>231</height>
+      <height>281</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView {
+    background-color: #fffff0; 
+    border: 1px solid #d3d3d3; 
+}
+QHeaderView::section {
+    background-color: #D2B48C; 
+    color: BLACK; 
+    padding: 4px;
+    border: 1px solid #d3d3d3; 
+}
+QTableView::item {
+    border-bottom: 1px solid #d3d3d3;
+}
+QTableView::item:selected {
+    background-color: #A9A9A9;
+}
+QTableView::item:hover {
+    background-color: #F1E0B6; 
+}
+QTableView {
+    font: 12pt &quot;Arial&quot;; 
+}
+
+QTableView::item {
+    text-align: center; 
+}
+QScrollBar:vertical {
+    border: 1px solid #ffffff; 
+    background: #fffff0; 
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #F1E0B6; 
+    min-height: 20px; 
+}
+QScrollBar:horizontal {
+    border: 1px solid #ffffff; 
+    background: #fffff0;
+    height: 10px; 
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #F1E0B6; 
+    min-width: 20px; 
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none; 
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: none; 
+}
+
+
+
+</string>
     </property>
     <column>
      <property name="text">
@@ -88,37 +184,36 @@ background: lightgrey;</string>
      </property>
     </column>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QPushButton" name="pushButton_5">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>201</width>
-      <height>61</height>
+      <x>420</x>
+      <y>290</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 63 28pt &quot;Bahnschrift SemiBold SemiConden&quot;;</string>
+     <string notr="true">#pushButton_5{
+    background-color: #D2B48C; /* Blue background color for the button */
+    color: #00000; /* White text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border: 1px solid #736357; /* Border color */
+    border-radius: 5px; /* Slightly rounded corners */
+}
+
+#pushButton_5:hover {
+    background-color: #F1E0B6; /* Darker blue on hover */
+}
+
+#pushButton_5:pressed {
+    background-color: #1f618d; /* Even darker blue when pressed */
+}
+
+</string>
     </property>
     <property name="text">
-     <string>Project Name </string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_4">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>160</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 10pt  &quot;Yu Gothic UI Semibold&quot;;
-background: lightgrey;</string>
-    </property>
-    <property name="text">
-     <string>Delete</string>
+     <string>Back</string>
     </property>
    </widget>
   </widget>
